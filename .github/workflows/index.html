@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090d18">
+<title>Game Cloud | Seu PC na Nuvem</title>
+
+<style>
+:root {
+  --bg: #090d18;
+  --panel: #121a2b;
+  --blue: #4f8cff;
+  --green: #38e5ae;
+  --text: #f5f7ff;
+  --muted: #9ba9c4;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+header {
+  padding: 18px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #253047;
+}
+.logo { font-size: 22px; font-weight: 800; }
+.logo span { color: var(--green); }
+.badge {
+  font-size: 11px;
+  color: var(--green);
+  border: 1px solid #286c60;
+  padding: 6px 9px;
+  border-radius: 20px;
+}
+main { max-width: 1000px; margin: auto; padding: 28px 18px; }
+.hero {
+  padding: 32px 22px;
+  border-radius: 22px;
+  background: linear-gradient(135deg,#172c52,#11182b 70%);
+  border: 1px solid #263d61;
+}
+h1 { font-size: clamp(30px, 7vw, 48px); line-height: 1.1; }
+h1 span { color: var(--green); }
+p { color: var(--muted); line-height: 1.6; }
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+button {
+  border: 0;
+  padding: 13px 17px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.primary { background: var(--green); color: #071b19; }
+.secondary { background: #263653; color: white; }
+h2 { margin-top: 32px; font-size: 22px; }
+.tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+.tab { background: #1b263d; color: white; }
+.tab.active { background: var(--blue); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 15px;
+  margin-top: 18px;
+}
+.card {
+  background: var(--panel);
+  padding: 21px;
+  border-radius: 16px;
+  border: 1px solid #25334b;
+}
+.card h3 { margin-top: 0; }
+.price { font-size: 25px; font-weight: 800; }
+.price small { font-size: 13px; color: var(--muted); }
+.tag {
+  display: inline-block;
+  background: #203b39;
+  color: var(--green);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 11px;
+}
+.card button { width: 100%; margin-top: 10px; }
+.notice {
+  margin-top: 24px;
+  background: #191f2d;
+  border: 1px solid #343d50;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 13px;
+  color: #c8d3e7;
+}
+footer {
+  text-align: center;
+  padding: 28px 15px;
+  color: var(--muted);
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">GAME <span>CLOUD</span></div>
+  <div class="badge">PROTÓTIPO</div>
+</header>
+
+<main>
+  <section class="hero">
+    <span class="tag">SEU PC, PELA INTERNET</span>
+    <h1>O poder do PC.<br><span>Na palma da mão.</span></h1>
+    <p>
+      Explore nossa proposta de computadores virtuais
+      para jogos, trabalho e estudo.
+    </p>
+    <div class="buttons">
+      <button class="primary" onclick="showPlans()">
+        Explorar PCs
+      </button>
+      <button class="secondary" onclick="showInfo()">
+        Como funciona?
+      </button>
+    </div>
+  </section>
+
+  <h2>Escolha sua experiência</h2>
+  <div class="tabs">
+    <button class="tab active" id="gamingTab"
+      onclick="selectType('gaming')">🎮 Cloud Gaming</button>
+    <button class="tab" id="pcTab"
+      onclick="selectType('pc')">💻 Cloud PC</button>
+  </div>
+
+  <div class="grid" id="plans"></div>
+
+  <div class="notice" id="notice" role="status">
+    ⚠️ Versão de demonstração. Nenhum servidor está conectado.
+    Os preços e recursos abaixo são exemplos, não ofertas reais.
+  </div>
+</main>
+
+<footer>
+  GAME CLOUD © 2026 · Projeto independente
+  <br>Computação em nuvem para todos.
+</footer>
+
+<script>
+const plans = {
+  gaming: [
+    {
+      name: "Gaming Starter",
+      desc: "Experiência inicial de jogos via streaming.",
+      price: "A definir",
+      specs: "GPU e desempenho a confirmar"
+    },
+    {
+      name: "Gaming Pro",
+      desc: "Proposta para jogos mais exigentes.",
+      price: "A definir",
+      specs: "GPU dedicada necessária"
+    }
+  ],
+  pc: [
+    {
+      name: "Cloud Basic",
+      desc: "Windows remoto para tarefas do dia a dia.",
+      price: "A definir",
+      specs: "CPU e memória a confirmar"
+    },
+    {
+      name: "Cloud Power",
+      desc: "Proposta para tarefas mais pesadas.",
+      price: "A definir",
+      specs: "Recursos conforme o servidor"
+    }
+  ]
+};
+
+function selectType(type) {
+  document.getElementById("gamingTab")
+    .classList.toggle("active", type === "gaming");
+  document.getElementById("pcTab")
+    .classList.toggle("active", type === "pc");
+
+  document.getElementById("plans").innerHTML =
+    plans[type].map((plan, i) => `
+      <article class="card">
+        <span class="tag">PLANO DEMONSTRATIVO</span>
+        <h3>${plan.name}</h3>
+        <p>${plan.desc}</p>
+        <div class="price">${plan.price}</div>
+        <p>${plan.specs}</p>
+        <button class="primary"
+          onclick="connectDemo('${plan.name}')">
+          Testar conexão
+        </button>
+      </article>
+    `).join("");
+}
+
+function connectDemo(name) {
+  alert(
+    name + "\\n\\n" +
+    "Este é apenas um protótipo. " +
+    "Ainda precisamos configurar um servidor real " +
+    "e um sistema de conexão remota."
+  );
+}
+
+function showPlans() {
+  document.getElementById("plans").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function showInfo() {
+  alert(
+    "O Game Cloud pretende transmitir a imagem " +
+    "de um computador remoto para o seu dispositivo. " +
+    "Esta versão ainda não possui servidor."
+  );
+}
+
+selectType("gaming");
+</script>
+</body>
+  </html>
+  
